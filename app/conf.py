@@ -5,12 +5,14 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.switch import Switch
 from kivy.uix.image import Image
+from kivy.properties import ObjectProperty
 
 # Create both screens. Please note the root.manager.current: this is how
 # you can control the ScreenManager from kv. Each screen has by default a
 # property manager that gives you the instance of the ScreenManager used.
 Builder.load_string("""
-<Pantaila>:
+<Konfigurazioa>:
+    alarma_box: alarma
     BoxLayout:
         orientation: "vertical"
         height:root.height
@@ -25,6 +27,18 @@ Builder.load_string("""
             orientation: "horizontal"
             height:root.height/4
             width:root.width
+        BoxLayout:
+            orientation: "horizontal"
+            height:root.height/2
+            width:root.width
+            Image:
+                source: '.png'
+        BoxLayout:
+            orientation: "horizontal"
+            height:root.height/4
+            width:root.width
+            Image:
+                source: ".png"
         GridLayout:
             orientation: "horizontal"
             cols: 2
@@ -33,6 +47,7 @@ Builder.load_string("""
             Image:
                 source: 'argia.png'
             Switch:
+                on_active: root.argia("argia")
         GridLayout:
             orientation: "horizontal"
             cols: 2
@@ -50,6 +65,7 @@ Builder.load_string("""
                 source: 'kalefakzioa.png'
             Switch:
         GridLayout:
+            id:alarma
             orientation: "horizontal"
             cols: 2
             height:root.height/6
@@ -60,18 +76,27 @@ Builder.load_string("""
 """)
 
 # Declare both screens
-class Pantaila(Screen):
+class Konfigurazioa(Screen):
+
+    alarma_box = ObjectProperty(None)
 
     def atzera(self):
         print("Atzera")
+        sm.current = "Konfigurazioa"
 
     def funtzioa(self):
         print("botoia")
 
+    def argia(self,switch):
+        print(switch)
+        self.alarma_box.size_hint_y=None
+        self.alarma_box="0dp"
+
+
 
 # Create the screen manager
 sm = ScreenManager()
-sm.add_widget(Pantaila(name='Froga'))
+sm.add_widget(Konfigurazioa(name='Konfigurazioa'))
 
 class TestApp(App):
 
